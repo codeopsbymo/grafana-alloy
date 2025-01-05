@@ -1,0 +1,40 @@
+name: Realse Version
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - '.gitignore'
+      - '.github/**'
+
+jobs:
+  releaseGithub:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+    - name: Bump version and push tag
+      id: bump
+      uses: mathieudutour/github-tag-action@v6.2
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        default_bump: patch
+        
+    - name: Build Changelog
+      id: github_release
+      uses: mikepenz/release-changelog-builder-action@v5
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
+        fromTag: ${{ steps.bump.outputs.previous_tag }} 
+        toTag: ${{ steps.bump.outputs.new_tag }}
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
+      with:
+        body: ${{ steps.bump.outputs.changelog }}
+        tag_name: ${{ steps.bump.outputs.new_tag }}
