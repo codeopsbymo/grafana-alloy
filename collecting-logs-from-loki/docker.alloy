@@ -1,0 +1,36 @@
+discovery.docker "linux" {
+  host = "unix:///var/run/docker.sock"
+}
+
+discovery.relabel "container_logs" {
+  targets = discovery.docker.linux.targets
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    target_label  = "container_name"
+  }
+  rule {
+    source_labels = ["__meta_docker_container_id"]
+    target_label  = "container_id"
+  }
+  rule {
+    source_labels = ["__meta_docker_network_ip"]
+    target_label  = "container_network_ip"
+  }
+  rule {
+    source_labels = ["__meta_docker_container_network_mode"]
+    target_label  = "container_network_mode"
+  }
+}
+
+
+loki.source.docker "docker" {
+  host       = "unix:///var/run/docker.sock"
+  targets    = discovery.relabel.container_logs.output
+  forward_to = [loki.write.docker.receiver]
+}
+
+loki.write "docker" {
+  endpoint {
+    url = "http://localhost:3100/loki/api/v1/push"
+  }
+}

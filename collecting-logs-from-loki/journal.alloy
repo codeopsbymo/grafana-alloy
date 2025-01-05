@@ -1,0 +1,24 @@
+loki.relabel "journal" {
+  forward_to = []
+
+  rule {
+    source_labels = ["__journal__systemd_unit"]
+    target_label  = "unit"
+  }
+  rule {
+    source_labels = ["unit"]
+    action = "keep"
+    regex = "ntp.service"
+  }
+}
+
+loki.source.journal "journal"  {
+  forward_to    = [loki.write.journal.receiver]
+  relabel_rules = loki.relabel.journal.rules
+}
+
+loki.write "journal" {
+  endpoint {
+    url ="http://localhost:3100/loki/api/v1/push"
+  }
+}
