@@ -6,6 +6,10 @@ Learn how to collect different types of data using **Grafana Alloy components**.
 
 The following sections cover various **Alloy components** and how they can be utilized for logs, metrics, and traces:
 
+- [Logs with Loki](#1-logs-with-loki)
+- [Metrics with Alloy](#2-metrics-with-alloy)
+- [Traces with Alloy](#3-traces-with-alloy)
+
 ### 1. Logs with Loki
 In this section, we explore various ways to collect logs from different sources into Loki, focusing on the following types of logs:
 
