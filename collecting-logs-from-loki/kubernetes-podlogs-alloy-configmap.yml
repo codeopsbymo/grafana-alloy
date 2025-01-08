@@ -51,7 +51,7 @@ data:
 
      loki.process "pod_logs" {
        stage.match {
-         selector = "{namespace=~\"(ngin|ngim)x\"}"
+         selector = "{namespace=~\"(my|your)app\"}"
          stage.regex {
            expression = "(?P<method>GET|PUT|DELETE|POST)"
          }
