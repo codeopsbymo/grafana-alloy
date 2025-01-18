@@ -1,0 +1,9 @@
+alloy:
+  configMap:
+    # -- Create a new ConfigMap for the config file.
+    create: false
+    name: alloy-config
+    key: config.alloy
+  mounts:
+    # -- Mount /var/log from the host into the container for log collection.
+    varlog: true

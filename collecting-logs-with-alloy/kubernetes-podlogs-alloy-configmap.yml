@@ -51,21 +51,12 @@ data:
 
      loki.process "pod_logs" {
        stage.match {
-         selector = "{namespace=~\"(my|your)app\"}"
-         stage.regex {
-           expression = "(?P<method>GET|PUT|DELETE|POST)"
-         }
-         stage.regex {
-           expression = "(?P<status_code_with_http_version>HTTP.{6}\\d{3})"
-         }
-         stage.regex {
-           expression = "(?P<status_code>\\d{3})"
-           source = "status_code_with_http_version"
-         }
+         selector = "{namespace=\"myapp\"}"
+         stage.cri {}
          stage.labels {
            values = {
-             method = "",
-             status_code = "",
+             flags   = "",
+             stream  = "",
            }
          }
        }

@@ -5,11 +5,11 @@ loki.relabel "journal" {
     source_labels = ["__journal__systemd_unit"]
     target_label  = "unit"
   }
-  rule {
+  /*rule {
     source_labels = ["unit"]
     action = "keep"
     regex = "ntp.service"
-  }
+  }*/
 }
 
 loki.source.journal "journal"  {

@@ -1,9 +1,21 @@
 local.file_match "local" {
   path_targets = [{"__path__" = "/var/log/auth.log"}]
+  sync_period = "10s"
 }
 
 loki.source.file "local" {
+  /* targets    = [
+    {__path__ = "/tmp/foo.txt", "color" = "pink"},
+    {__path__ = "/tmp/bar.txt", "color" = "blue"},
+    {__path__ = "/tmp/baz.txt", "color" = "grey"},
+  ] */
   targets    = local.file_match.local.targets
+  tail_from_end = false
+  /* decompression {
+    enabled       = true
+    initial_delay = "10s"
+    format        = "gz"
+  } */
   forward_to = [loki.write.local.receiver]
 }
 
