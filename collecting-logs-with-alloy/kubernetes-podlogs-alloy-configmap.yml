@@ -52,11 +52,12 @@ data:
      loki.process "pod_logs" {
        stage.match {
          selector = "{namespace=\"myapp\"}"
-         stage.cri {}
+         stage.regex {
+           expression = "(?P<method>GET|PUT|POST|DELETE)"
+         }
          stage.labels {
            values = {
-             flags   = "",
-             stream  = "",
+             method  = "",
            }
          }
        }
