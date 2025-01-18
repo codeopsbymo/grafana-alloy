@@ -2,6 +2,26 @@
 
 Learn how to collect different types of data using **Grafana Alloy components**. This repository contains resources and guides to help you get started with collecting logs, metrics, and traces using Alloy's observability tools.
 
+## YouTube Playlist
+
+This repository is associated with our Grafana Alloy YouTube playlist that covers the following topics:
+
+### 1. Collecting Logs
+- [Watch now: Collecting Logs](https://www.youtube.com/watch?v=tMSZ_DVq5pw)
+  - Learn how to collect logs from various sources:
+    - **Local files**: Collect logs from file-based sources.
+    - **Systemd-journal**: Capture logs from systemd services.
+    - **Docker containers**: Stream logs from Docker container logs.
+    - **Kubernetes pods**: Gather logs from running Kubernetes pods.
+  - All logs are sent to **Grafana Loki** via **Grafana Alloy**
+
+### 2. Collecting Metrics
+- **Coming Soon**  
+
+### 3. Collecting Traces
+- **Coming Soon**
+
+
 ## Sections
 
 The following sections cover various **Alloy components** and how they can be utilized for logs, metrics, and traces:
