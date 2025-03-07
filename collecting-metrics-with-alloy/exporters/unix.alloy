@@ -1,0 +1,17 @@
+prometheus.exporter.unix "unix" {
+//  set_collectors = []
+//  enable_collectors = []
+//  disable_collectors = []
+}
+
+
+prometheus.scrape "unix" {
+  targets    = prometheus.exporter.unix.unix.targets
+  forward_to = [prometheus.remote_write.unix.receiver]
+}
+
+prometheus.remote_write "unix" {
+  endpoint {
+    url = "http://localhost:9009/api/v1/push"
+  }
+}
