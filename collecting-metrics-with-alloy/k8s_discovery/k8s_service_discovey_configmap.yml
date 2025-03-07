@@ -1,0 +1,62 @@
+apiVersion: v1
+data:
+  config.alloy: |
+    discovery.kubernetes "k8s_services" {
+      role = "service"
+    }
+
+    discovery.relabel "k8s_services" {
+      targets = discovery.kubernetes.k8s_services.targets
+      rule {
+        source_labels = ["__meta_kubernetes_namespace"]
+        target_label  = "namespace"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_service_name"]
+        target_label  = "service"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_service_type"]
+        target_label  = "type"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_service_port_number"]
+        target_label  = "port_number"
+      }
+      rule {
+        source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_service_name"]
+        separator     = "/"
+        target_label  = "job"
+      }
+    }
+
+    prometheus.scrape "k8s_services" {
+      targets    = discovery.relabel.k8s_services.output
+      forward_to = [prometheus.remote_write.mimir.receiver]
+    }
+
+    prometheus.remote_write "mimir" {
+      endpoint {
+        url = "http://mimir-nginx.mimir.svc.cluster.local/api/v1/push"
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: alloy-config
+  namespace: alloy-metrics
+
+
+# The following labels are included for discovered services:
+
+  #  __meta_kubernetes_namespace: The namespace of the service object.
+  #  __meta_kubernetes_service_annotation_<annotationname>: Each annotation from the service object.
+  #  __meta_kubernetes_service_annotationpresent_<annotationname>: true for each annotation of the service object.
+  #  __meta_kubernetes_service_cluster_ip: The cluster IP address of the service. This doesn’t apply to services of type ExternalName.
+  #  __meta_kubernetes_service_external_name: The DNS name of the service. This only applies to services of type ExternalName.
+  #  __meta_kubernetes_service_label_<labelname>: Each label from the service object.
+  #  __meta_kubernetes_service_labelpresent_<labelname>: true for each label of the service object.
+  #  __meta_kubernetes_service_name: The name of the service object.
+  #  __meta_kubernetes_service_port_name: Name of the service port for the target.
+  #  __meta_kubernetes_service_port_number: Number of the service port for the target.
+  #  __meta_kubernetes_service_port_protocol: Protocol of the service port for the target.
+  #  __meta_kubernetes_service_type: The type of the service.
