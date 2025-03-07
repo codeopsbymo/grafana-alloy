@@ -1,0 +1,17 @@
+# Use an official Apache image
+FROM httpd:latest
+
+# Enable mod_status module
+RUN sed -i '/LoadModule status_module/s/^#//g' /usr/local/apache2/conf/httpd.conf
+
+# Add mod_status configuration
+RUN echo "\
+<Location /server-status>\n\
+    SetHandler server-status\n\
+    Require local\n\
+    Require ip 192.168.1.5\n\
+</Location>\n\
+ExtendedStatus On\n" >> /usr/local/apache2/conf/httpd.conf
+
+# Expose port 80
+EXPOSE 80
