@@ -1,0 +1,17 @@
+prometheus.exporter.redis "redis" {
+  redis_addr = "localhost:6379"
+  redis_password = "codeopsbymo"
+  connection_timeout = "15s"
+  is_cluster = false
+}
+
+prometheus.scrape "redis" {
+  targets    = prometheus.exporter.redis.redis.targets
+  forward_to = [prometheus.remote_write.redis.receiver]
+}
+
+prometheus.remote_write "redis" {
+  endpoint {
+    url = "http://localhost:9009/api/v1/push"
+  }
+}
