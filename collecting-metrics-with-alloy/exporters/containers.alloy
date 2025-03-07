@@ -1,0 +1,14 @@
+prometheus.exporter.cadvisor "cadvisor" {
+  docker_host = "unix:///var/run/docker.sock"
+}
+
+prometheus.scrape "cadvisor" {
+  targets    = prometheus.exporter.cadvisor.cadvisor.targets
+  forward_to = [prometheus.remote_write.cadvisor.receiver]
+}
+
+prometheus.remote_write "cadvisor" {
+  endpoint {
+    url = "http://localhost:9009/api/v1/push"
+  }
+}
