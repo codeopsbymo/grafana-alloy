@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  redis:
+    image: docker.arvancloud.ir/redis
+    container_name: master
+    command: bash -c "redis-server --appendonly yes --requirepass codeopsbymo"
+    ports:
+      - "6379:6379"
+    networks:
+      - redis
+    volumes:
+      - ./data:/data
+
+networks:
+  redis:
+    driver: bridge
