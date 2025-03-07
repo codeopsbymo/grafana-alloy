@@ -1,0 +1,16 @@
+prometheus.exporter.apache "apache" {
+  scrape_uri = "http://IP:PORT/server-status?auto"
+  insecure = true
+}
+
+prometheus.scrape "apache" {
+  targets    = prometheus.exporter.apache.apache.targets
+  job_name = "apache"
+  forward_to = [prometheus.remote_write.apache.receiver]
+}
+
+prometheus.remote_write "apache" {
+  endpoint {
+    url = "http://localhost:9009/api/v1/push"
+  }
+}
