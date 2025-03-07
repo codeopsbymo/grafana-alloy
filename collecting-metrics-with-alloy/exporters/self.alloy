@@ -1,0 +1,17 @@
+prometheus.exporter.self "alloy_metrics" {
+
+}
+
+prometheus.scrape "alloy_metrics" {
+  targets    = prometheus.exporter.self.alloy_metrics.targets
+  scrape_interval = "50s" // Default: "60s"
+  scrape_timeout = "15s" // Default: "10s"
+  metrics_path = "/metrics"
+  forward_to = [prometheus.remote_write.alloy_metrics.receiver]
+} 
+
+prometheus.remote_write "alloy_metrics" {
+  endpoint {
+    url = "http://localhost:9009/api/v1/push"
+  }
+}
