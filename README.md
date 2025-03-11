@@ -65,7 +65,7 @@ Kubernetes pods generate logs from the containers running inside them. These log
 - `loki.process`: Processes the pod logs before writing them to Loki.
 - `loki.write`: Writes the Kubernetes pod logs into Loki.
 
-For all related codes and configurations, [click here](./collecting-logs-with-loki).
+For all related codes and configurations, [click here](./collecting-logs-with-alloy).
 
 ---
 
