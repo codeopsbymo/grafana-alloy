@@ -76,3 +76,9 @@ For all related codes and configurations, [click here](./collecting-logs-with-al
 
 ### 3. Traces with Alloy
 🚧 **Coming Soon:** This section will provide a detailed guide on collecting and visualizing traces using Alloy. Stay tuned for updates!
+
+## Additional Resources
+
+For more in-depth details and advanced configuration options, make sure to check out the Grafana Alloy official documentation:
+
+    https://grafana.com/docs/alloy
